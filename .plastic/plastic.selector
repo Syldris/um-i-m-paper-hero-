@@ -1,0 +1,4 @@
+repository "um-i-m-paper-hero-@hojeong6777@cloud"
+  path "/"
+    br "/main"
+    co "/main"
