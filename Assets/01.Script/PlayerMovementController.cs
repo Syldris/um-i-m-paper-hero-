@@ -34,6 +34,7 @@ public class PlayerMovementController : MonoBehaviour, IBeginDragHandler, IDragH
             inputDir : inputDir.normalized * leverRange;
 
         lever.anchoredPosition = clampedDir;
+        Debug.Log(clampedDir);
         
     }
 
