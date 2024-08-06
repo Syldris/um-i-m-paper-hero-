@@ -8,6 +8,7 @@ public class PlayerMove : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
+
     private float inputDelay = 0.15f;
     private bool jumpInputCooldown;
     [Range(1f, 10f)]
