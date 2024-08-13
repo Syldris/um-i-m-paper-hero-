@@ -7,9 +7,9 @@ public class PlayerMove : MonoBehaviour
     private FixedJoystick joystick;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
+    private PlayerAnimation playerAnimation;
 
-
-    private float inputDelay = 0.15f;
+    private float inputDelay = 0.2f;
     private bool jumpInputCooldown;
     [Range(1f, 10f)]
     public float jumpPower;
@@ -32,12 +32,21 @@ public class PlayerMove : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     private void FixedUpdate()
     {
         float dirx = joystick.Direction.x * playerMoveSpeed * Time.deltaTime;
         transform.Translate(dirx, 0, 0);
+
+        //Move 애니메이션 설정
+        if (dirx == 0)
+            playerAnimation.currentState = States.Idle;
+        else
+            playerAnimation.currentState = States.Move;
+        
+
         //바라보는 방향 설정
         switch(joystick.Direction.x)
         {
@@ -78,7 +87,7 @@ public class PlayerMove : MonoBehaviour
         rb.velocity = Vector2.up * jumpPower;
         StartCoroutine(JumpInputDelay());
     }
-    //더블점프 방지 쿨타임0.15초
+    //더블점프 방지 쿨타임0.2초
     IEnumerator JumpInputDelay()
     {
         jumpInputCooldown = true;
