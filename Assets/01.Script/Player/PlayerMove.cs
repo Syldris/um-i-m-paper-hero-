@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : PlayerStatus
 {
     [SerializeField]
     private FixedJoystick joystick;
@@ -11,19 +11,11 @@ public class PlayerMove : MonoBehaviour
 
     private float inputDelay = 0.2f;
     private bool jumpInputCooldown;
-    [Range(1f, 10f)]
-    public float jumpPower;
-    public int extraJumpCount = 1;
 
     [Range(1f,10f)]
     public float playerMoveSpeed;
 
     private Vector3 dashDirection;
-    public float dashDistance;
-    private float dashCurTime;
-    public float dashTime;
-    public float dashCoolTime;
-    private float dashCurCoolTime;
     private bool canDash = true;
 
     public bool onGround;
@@ -65,6 +57,7 @@ public class PlayerMove : MonoBehaviour
         {
             onGround = true;
             extraJumpCount = 1;
+            playerAnimation.currentState = States.JumpDown;
         }
     }
     public void Jump()
@@ -84,6 +77,7 @@ public class PlayerMove : MonoBehaviour
                     extraJumpCount--;
                 break;
         }
+        playerAnimation.currentState = States.JumpUP;
         rb.velocity = Vector2.up * jumpPower;
         StartCoroutine(JumpInputDelay());
     }
@@ -106,12 +100,12 @@ public class PlayerMove : MonoBehaviour
     }
     IEnumerator Dash()
     {
-        dashCurTime = 0f;
+        float dashCurTime = 0f;
         //바라보는 방향으로 대쉬이동
         if(spriteRenderer.flipX)
             dashDirection = Vector2.left;
         else dashDirection = Vector2.right;
-
+        playerAnimation.currentState = States.Dash;
         //대시 시간이 길어지면 대시거리 길어짐
         while (dashTime > dashCurTime)
         {
@@ -121,10 +115,10 @@ public class PlayerMove : MonoBehaviour
         } 
     }
     //대쉬 쿨타임
-    IEnumerator DashCoolDown()
+    IEnumerator DashCoolDown()  
     {
         canDash = false;
-        dashCurCoolTime = dashCoolTime;
+        float dashCurCoolTime = dashCoolTime;
         while(dashCurCoolTime > 0f)
         {
             dashCurCoolTime -= Time.deltaTime;

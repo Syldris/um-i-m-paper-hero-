@@ -6,7 +6,8 @@ public enum States
 {
     Idle,
     Move,
-    Jump,
+    JumpUP,
+    JumpDown,
     Attack,
     Dash,
     Sit,
@@ -32,6 +33,27 @@ public class PlayerAnimation : MonoBehaviour
                 break;
             case States.Move:
                 animator.SetBool("Move", true);
+                break;
+            case States.JumpUP:
+                animator.SetTrigger("JumpUP");
+                break;
+            case States.JumpDown:
+                animator.SetTrigger("JumpDown");
+                break;
+            case States.Attack:
+                animator.SetTrigger("Attack");
+                break;
+            case States.Dash:
+                animator.SetTrigger("Dash");
+                break;
+            case States.Sit:
+                animator.SetTrigger("Sit");
+                break;
+            case States.Hit:
+                animator.SetTrigger("Hit");
+                break;
+            case States.Die:
+                animator.SetTrigger("Die");
                 break;
         }
     }
